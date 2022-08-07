@@ -3,11 +3,20 @@
     path: /opt/splunk/etc/apps/DA-ESS-ContentUpdate
   register: escu_app
 
-- name: download ESCU app from S3 bucket
-  get_url:
-    url: '{{ s3_bucket_url }}/{{ splunk_escu_app }}'
+# - name: download ESCU app from S3 bucket
+#   get_url:
+#     url: '{{ s3_bucket_url }}/{{ splunk_escu_app }}'
+#     dest: /tmp/escu_app.tgz
+#   when: escu_app.stat.exists == False
+
+# localize
+- name: Copy ESCU app from local to Splunk server
+  copy:
+    src: "{{ local_downloads_folder }}/{{ splunk_escu_app }}"
     dest: /tmp/escu_app.tgz
+    force: no
   when: escu_app.stat.exists == False
+
 
 - name: Install escu app via REST
   uri:

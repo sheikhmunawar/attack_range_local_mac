@@ -3,11 +3,21 @@
     path: /opt/splunk/etc/apps/Splunk_Security_Essentials
   register: sse_app
 
-- name: download ESCU app from S3 bucket
-  get_url:
-    url: '{{ s3_bucket_url }}/{{ splunk_security_essentials_app }}'
+# - name: download ESCU app from S3 bucket
+#   get_url:
+#     url: '{{ s3_bucket_url }}/{{ splunk_security_essentials_app }}'
+#     dest: /tmp/sse_app.tgz
+#   when: sse_app.stat.exists == False
+
+
+# localize
+- name: Copy ESCU app from local to Splunk server
+  copy:
+    src: "{{ local_downloads_folder }}/{{ splunk_security_essentials_app }}"
     dest: /tmp/sse_app.tgz
+    force: no
   when: sse_app.stat.exists == False
+
 
 - name: Install sse app via REST
   uri:

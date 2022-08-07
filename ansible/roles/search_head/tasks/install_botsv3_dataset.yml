@@ -3,11 +3,36 @@
     path: /opt/splunk/etc/apps/botsv3_data_set
   register: botsv3_app
 
-- name: download BOTSv3 dataset
+# - name: download BOTSv3 dataset
+#   unarchive:
+#     src: 'https://botsdataset.s3.amazonaws.com/botsv3/botsv3_data_set.tgz'
+#     dest: /opt/splunk/etc/apps 
+#     owner: splunk
+#     group: splunk
+#     remote_src: yes
+#   when: botsv3_app.stat.exists == False
+
+
+- name: Create the /opt/splunk/tmp/ directory
+  file:
+    path: "/opt/splunk/tmp"
+    state: directory
+    group: "splunk"
+    owner: "splunk"
+  become: yes
+
+- name: Copy BOTSv3 dataset from local to Splunk Server
+  copy:
+    src: "{{ local_downloads_folder }}/botsv3_data_set.tgz"
+    dest: /opt/splunk/tmp/botsv1-attack-only.tgz 
+    force: no 
+
+- name: unarchive BOTSv3 dataset
   unarchive:
-    src: 'https://botsdataset.s3.amazonaws.com/botsv3/botsv3_data_set.tgz'
+    src: '/opt/splunk/tmp/botsv3_data_set.tgz'    
     dest: /opt/splunk/etc/apps 
     owner: splunk
     group: splunk
     remote_src: yes
-  when: botsv3_app.stat.exists == False
+  when: botsv1a_app.stat.exists == False
+

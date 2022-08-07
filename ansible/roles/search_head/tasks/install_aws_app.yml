@@ -3,11 +3,20 @@
     path: /opt/splunk/etc/apps/Splunk_TA_aws  # need to be done
   register: aws_app
 
-- name: download AWS App from S3
-  get_url:
-    url: '{{ s3_bucket_url }}/{{ splunk_aws_app }}'
+# - name: download AWS App from S3
+#   get_url:
+#     url: '{{ s3_bucket_url }}/{{ splunk_aws_app }}'
+#     dest: /tmp/aws_app.tgz
+#   when: aws_app.stat.exists == False
+
+# localize
+- name: Copy AWS App from local to Splunk server
+  copy:
+    src: "{{ local_downloads_folder }}/{{ splunk_aws_app }}"
     dest: /tmp/aws_app.tgz
+    force: no
   when: aws_app.stat.exists == False
+
 
 - name: Install aws app via REST
   uri:

@@ -3,13 +3,23 @@
     path: /opt/splunk/etc/apps/Splunk_SA_Scientific_Python_linux_x86_64
   register: python_app
 
-- name: download Python app from S3 bucket
-  get_url:
-    url: '{{ s3_bucket_url }}/{{ splunk_python_app }}'
+# - name: download Python app from S3 bucket
+#   get_url:
+#     url: '{{ s3_bucket_url }}/{{ splunk_python_app }}'
+#     dest: /tmp/python-for-scientific-computing-for-linux-64-bit_14.tgz
+#   when: 
+#     - python_app.stat.exists == False
+#     - install_mltk == "1"
+
+# localize
+- name: Copy Python app from local to Splunk server
+  copy:
+    src: "{{ local_downloads_folder }}/{{ splunk_python_app }}"
     dest: /tmp/python-for-scientific-computing-for-linux-64-bit_14.tgz
+    force: no
   when: 
     - python_app.stat.exists == False
-    - install_mltk == "1"
+    - install_mltk == "1"  
 
 - name: Install Python app via REST
   uri:
@@ -33,13 +43,25 @@
     path: /opt/splunk/etc/apps/Splunk_ML_Toolkit
   register: mltk_app
 
-- name: download MLTK app from S3 bucket
-  get_url:
-    url: '{{ s3_bucket_url }}/{{ splunk_mltk_app }}'
+# - name: download MLTK app from S3 bucket
+#   get_url:
+#     url: '{{ s3_bucket_url }}/{{ splunk_mltk_app }}'
+#     dest: /tmp/splunk-machine-learning-toolkit_450.tgz
+#   when: 
+#     - mltk_app.stat.exists == False
+#     - install_mltk == "1"
+
+# localize
+- name: Copy MLTK app from local to Splunk server
+  copy:
+    src: "{{ local_downloads_folder }}/{{ splunk_mltk_app }}"
     dest: /tmp/splunk-machine-learning-toolkit_450.tgz
+    force: no
   when: 
     - mltk_app.stat.exists == False
     - install_mltk == "1"
+
+
 
 - name: Install MLTK app via REST
   uri:

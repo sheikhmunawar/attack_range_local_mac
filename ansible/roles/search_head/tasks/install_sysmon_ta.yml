@@ -3,12 +3,22 @@
     path: /opt/splunk/etc/apps/TA-microsoft-sysmon
   register: sysmon_ta
 
-- name: download Sysmon TA from S3 bucket
-  get_url:
-    url: '{{ s3_bucket_url }}/{{ splunk_sysmon_ta }}'
+# - name: download Sysmon TA from S3 bucket
+#   get_url:
+#     url: '{{ s3_bucket_url }}/{{ splunk_sysmon_ta }}'
+#     dest: /tmp/sysmon_ta.tgz
+#     timeout: 30
+#   when: sysmon_ta.stat.exists == False
+
+
+# localize
+- name: Copy splunk_sysmon_ta from local to Splunk server
+  copy:
+    src: "{{ local_downloads_folder }}/{{ splunk_sysmon_ta}}"
     dest: /tmp/sysmon_ta.tgz
-    timeout: 30
+    force: no
   when: sysmon_ta.stat.exists == False
+
 
 - name: Install sysmon ta app via REST
   uri:

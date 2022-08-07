@@ -1,7 +1,8 @@
 - name: Copy enterprise security to server
   copy:
-    src: "../../../apps/{{ splunk_es_app }}"
+    src: "{{ local_downloads_folder }}/{{ splunk_es_app }}"
     dest: /tmp/es_app.tgz
+    force: no
   when: install_es == "1"
 
 - name: Install es app via REST

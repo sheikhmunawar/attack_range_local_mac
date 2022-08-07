@@ -3,9 +3,16 @@
     path: /opt/splunk/etc/apps/status_indicator_app
   register: custom_dashboard_status_app
 
-- name: download Status Indicator Dashboard from S3 bucket
-  get_url:
-    url: '{{ s3_bucket_url }}/{{ status_indicator_custom_visualization }}'
+# - name: download Status Indicator Dashboard from S3 bucket
+#   get_url:
+#     url: '{{ s3_bucket_url }}/{{ status_indicator_custom_visualization }}'
+#     dest: /tmp/custom_dashboard_status_app.tgz
+#   when: custom_dashboard_status_app.stat.exists == False
+
+# localize
+- name: Copy Status Indicator Dashboard from local to Splunk server
+  copy:
+    src: "{{ local_downloads_folder }}/{{ status_indicator_custom_visualization }}"
     dest: /tmp/custom_dashboard_status_app.tgz
   when: custom_dashboard_status_app.stat.exists == False
 
@@ -29,11 +36,20 @@
     path: /opt/splunk/etc/apps/punchcard_app
   register: punchcard_dashboard_app
 
-- name: download Punchcard Dashboard from S3 bucket
-  get_url:
-    url: '{{ s3_bucket_url }}/{{ punchard_custom_visualization }}'
+# - name: download Punchcard Dashboard from S3 bucket
+#   get_url:
+#     url: '{{ s3_bucket_url }}/{{ punchard_custom_visualization }}'
+#     dest: /tmp/punchcard_dashboard_app.tgz
+#   when: punchcard_dashboard_app.stat.exists == False
+
+
+# localize
+- name: Copy Punchcard Dashboard from local to Splunk server
+  copy:
+    src: "{{ local_downloads_folder }}/{{ punchard_custom_visualization }}"
     dest: /tmp/punchcard_dashboard_app.tgz
   when: punchcard_dashboard_app.stat.exists == False
+
 
 - name: Install Punchcard Dashboard via REST
   uri:
@@ -56,10 +72,18 @@
     path: /opt/splunk/etc/apps/splunk_attack_range_reporting
   register: attack_range_reporting_app
 
-- name: download Attack Range Reporting from S3 bucket
-  get_url:
-    url: '{{ s3_bucket_url }}/{{ splunk_attack_range_dashboard }}'
+# - name: download Attack Range Reporting from S3 bucket
+#   get_url:
+#     url: '{{ s3_bucket_url }}/{{ splunk_attack_range_dashboard }}'
+#     dest: /tmp/attack_range_reporting_app.tgz
+#   when: attack_range_reporting_app.stat.exists == False
+
+# localize
+- name: Copy Attack Range Reporting from local to Splunk server
+  copy:
+    src: "{{ local_downloads_folder }}/{{ splunk_attack_range_dashboard }}"
     dest: /tmp/attack_range_reporting_app.tgz
+    force: no
   when: attack_range_reporting_app.stat.exists == False
 
 - name: Install Attack Range Reporting via REST
