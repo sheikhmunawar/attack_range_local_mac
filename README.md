@@ -65,6 +65,8 @@ https://attack-range-appbinaries.s3-us-west-2.amazonaws.com/phantom-app-for-splu
 https://download.splunk.com/products/universalforwarder/releases/8.0.2/windows/splunkforwarder-8.0.2-a7f645ddaf91-x64-release.msi
 https://attack-range-appbinaries.s3-us-west-2.amazonaws.com/Sysmon.zip
 https://attack-range-appbinaries.s3-us-west-2.amazonaws.com/splunk-add-on-for-microsoft-sysmon_1062.tgz
+https://attack-range-appbinaries.s3-us-west-2.amazonaws.com/splunk-machine-learning-toolkit_510.tgz
+https://dl.google.com/go/go1.13.11.linux-amd64.tar.gz
 
 https://s3.amazonaws.com/botsdataset/botsv1/splunk-pre-indexed/botsv1_data_set.tgz
 https://s3.amazonaws.com/botsdataset/botsv1/botsv1-attack-only.tgz
